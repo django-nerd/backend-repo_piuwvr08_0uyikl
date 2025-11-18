@@ -12,7 +12,8 @@ Model name is converted to lowercase for the collection name:
 """
 
 from pydantic import BaseModel, Field
-from typing import Optional
+from typing import Optional, Dict, Any
+from datetime import datetime
 
 # Example schemas (replace with your own):
 
@@ -37,6 +38,17 @@ class Product(BaseModel):
     price: float = Field(..., ge=0, description="Price in dollars")
     category: str = Field(..., description="Product category")
     in_stock: bool = Field(True, description="Whether product is in stock")
+
+# Lytikz Event schema -------------------------------------------------
+class Event(BaseModel):
+    """
+    Analytics events captured by Lytikz
+    Collection name: "event"
+    """
+    event: str = Field(..., description="Event name, e.g., 'signup', 'clicked_button'")
+    user_id: Optional[str] = Field(None, description="User identifier")
+    properties: Dict[str, Any] = Field(default_factory=dict, description="Arbitrary properties for the event")
+    timestamp: Optional[datetime] = Field(default=None, description="When the event occurred (defaults to now)")
 
 # Add your own schemas here:
 # --------------------------------------------------
